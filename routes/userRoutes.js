@@ -4,6 +4,7 @@ const {
   addUser,
   getUsers,
   deleteUser,
+  editUser,
 } = require("../controllers/userController");
 const auth = require("../middlewares/authMiddleware");
 
@@ -15,5 +16,8 @@ router.get("/all-users", auth, getUsers);
 
 // Delete a user by ID
 router.delete("/delete-user/:id", auth, deleteUser);
+
+// Edit a user by ID
+router.put("/edit-user/:id", auth, editUser);
 
 module.exports = router;
