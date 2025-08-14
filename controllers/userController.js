@@ -71,7 +71,7 @@ exports.getUsers = (req, res) => {
 
 exports.editUser = async (req, res) => {
   const { id } = req.params;
-  const { first_name, last_name, email, mobile, password } = req.body; // role_id removed
+  const { first_name, last_name, email, mobile, role_id, password } = req.body; // role_id removed
 
   if (!id) {
     return res.status(400).json({ msg: "User ID is required" });
@@ -103,6 +103,10 @@ exports.editUser = async (req, res) => {
     if (mobile) {
       fields.push("mobile = ?");
       values.push(mobile);
+    }
+    if (role_id) {
+      fields.push("role_id = ?");
+      values.push(role_id);
     }
     if (hashedPassword) {
       fields.push("password = ?");
