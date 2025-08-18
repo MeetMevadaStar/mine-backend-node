@@ -1,4 +1,4 @@
-const conn = require("../config/db");
+const conn = require("../../config/db");
 const { v4: uuidv4 } = require("uuid");
 
 exports.createPair = (req, res) => {

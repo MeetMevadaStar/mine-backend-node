@@ -4,8 +4,8 @@ const {
   createPair,
   getAllPairs,
   deletePair,
-} = require("../controllers/coupleController");
-const auth = require("../middlewares/authMiddleware");
+} = require("../../controllers/webControllers/coupleController");
+const auth = require("../../middlewares/authMiddleware");
 
 router.post("/create-pair", auth, createPair);
 router.get("/get-pairs", auth, getAllPairs);

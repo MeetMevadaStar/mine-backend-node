@@ -1,4 +1,4 @@
-const conn = require("../config/db");
+const conn = require("../../config/db");
 const bcrypt = require("bcryptjs");
 const { v4: uuidv4 } = require("uuid"); // UUID for user ID
 

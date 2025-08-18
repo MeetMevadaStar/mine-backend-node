@@ -5,8 +5,8 @@ const {
   getUsers,
   deleteUser,
   editUser,
-} = require("../controllers/userController");
-const auth = require("../middlewares/authMiddleware");
+} = require("../../controllers/webControllers/userController");
+const auth = require("../../middlewares/authMiddleware");
 
 // Add a new user
 router.post("/add-user", auth, addUser);
