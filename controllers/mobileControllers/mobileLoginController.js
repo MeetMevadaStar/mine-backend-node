@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const conn = require("../../config/db");
 
 exports.loginUser = (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, firebaseToken } = req.body;
 
   if (!email || !password) {
     return res.status(400).json({ msg: "Email and Password are required" });
@@ -34,10 +34,24 @@ exports.loginUser = (req, res) => {
         });
       }
 
+      // ✅ Update Firebase token in DB
+      if (firebaseToken) {
+        conn.query(
+          "UPDATE users SET firebase_token = ? WHERE id = ?",
+          [firebaseToken, user.id],
+          (updateErr) => {
+            if (updateErr) {
+              console.error("Firebase token update error:", updateErr);
+            }
+          }
+        );
+      }
+
       // Generate JWT
       const token = jwt.sign(
         { id: user.id, role: user.role_id },
-        process.env.JWT_SECRET
+        process.env.JWT_SECRET,
+        { expiresIn: "7d" }
       );
 
       // Remove password before sending response
@@ -48,6 +62,7 @@ exports.loginUser = (req, res) => {
         token,
         user: {
           ...userData,
+          firebase_token: firebaseToken || user.firebase_token,
         },
       });
     }
