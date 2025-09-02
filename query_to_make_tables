@@ -1,0 +1,28 @@
+/// User Table
+
+CREATE TABLE users (
+    id VARCHAR(36) PRIMARY KEY, -- UUID format
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    mobile VARCHAR(20),
+    password VARCHAR(255) NOT NULL,
+    role_id ENUM('admin', 'male', 'female') NOT NULL,
+    pair_id VARCHAR(36),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (pair_id) REFERENCES couples(id) ON DELETE SET NULL
+);
+
+
+
+
+/// Couple Table
+CREATE TABLE couples (
+    id VARCHAR(36) PRIMARY KEY, -- UUID format
+    user1_id VARCHAR(36) NOT NULL,
+    user2_id VARCHAR(36) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user1_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (user2_id) REFERENCES users(id) ON DELETE CASCADE
+);
