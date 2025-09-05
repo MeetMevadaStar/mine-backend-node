@@ -11,7 +11,7 @@ exports.getProfile = (req, res) => {
       u.email,
       u.mobile,
       u.role_id,
-      c.id AS pair_id,
+      c.id AS couple_id,
       c.created_at AS pair_created_time,
       partner.id AS partner_id,
       CONCAT(partner.first_name, ' ', partner.last_name) AS partner_name,
@@ -19,7 +19,7 @@ exports.getProfile = (req, res) => {
       partner.mobile AS partner_mobile
     FROM users u
     LEFT JOIN couples c 
-      ON u.pair_id = c.id
+      ON (c.user1_id = u.id OR c.user2_id = u.id)
     LEFT JOIN users partner 
       ON ( (c.user1_id = u.id AND c.user2_id = partner.id) 
          OR (c.user2_id = u.id AND c.user1_id = partner.id) )

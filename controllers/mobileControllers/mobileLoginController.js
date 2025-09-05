@@ -27,44 +27,53 @@ exports.loginUser = (req, res) => {
         return res.status(401).json({ msg: "Invalid credentials" });
       }
 
-      // 🚨 Throw error if user not in pair
-      if (!user.pair_id) {
-        return res.status(403).json({
-          msg: "User is not in a pair. Please complete pairing first.",
-        });
-      }
+      // 🚨 Check if user is in couples table
+      conn.query(
+        "SELECT id FROM couples WHERE user1_id = ? OR user2_id = ?",
+        [user.id, user.id],
+        (coupleErr, coupleResults) => {
+          if (coupleErr)
+            return res.status(500).json({ msg: "DB Error", err: coupleErr });
 
-      // ✅ Update Firebase token in DB
-      if (firebaseToken) {
-        conn.query(
-          "UPDATE users SET firebase_token = ? WHERE id = ?",
-          [firebaseToken, user.id],
-          (updateErr) => {
-            if (updateErr) {
-              console.error("Firebase token update error:", updateErr);
-            }
+          if (coupleResults.length === 0) {
+            return res.status(403).json({
+              msg: "User is not in a pair. Please complete pairing first.",
+            });
           }
-        );
-      }
 
-      // Generate JWT
-      const token = jwt.sign(
-        { id: user.id, role: user.role_id },
-        process.env.JWT_SECRET,
-        { expiresIn: "7d" }
+          // ✅ Update Firebase token in DB
+          if (firebaseToken) {
+            conn.query(
+              "UPDATE users SET firebase_token = ? WHERE id = ?",
+              [firebaseToken, user.id],
+              (updateErr) => {
+                if (updateErr) {
+                  console.error("Firebase token update error:", updateErr);
+                }
+              }
+            );
+          }
+
+          // Generate JWT
+          const token = jwt.sign(
+            { id: user.id, role: user.role_id },
+            process.env.JWT_SECRET,
+            { expiresIn: "7d" }
+          );
+
+          // Remove password before sending response
+          const { password: _, ...userData } = user;
+
+          return res.json({
+            msg: "Login successful",
+            token,
+            user: {
+              ...userData,
+              firebase_token: firebaseToken || user.firebase_token,
+            },
+          });
+        }
       );
-
-      // Remove password before sending response
-      const { password: _, ...userData } = user;
-
-      return res.json({
-        msg: "Login successful",
-        token,
-        user: {
-          ...userData,
-          firebase_token: firebaseToken || user.firebase_token,
-        },
-      });
     }
   );
 };
