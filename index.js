@@ -23,6 +23,6 @@ app.use((req, res, next) => {
   });
 });
 
-app.get("/api", (req, res) => {
+app.get("/run", (req, res) => {
   res.send("Server is running ✅");
 });
