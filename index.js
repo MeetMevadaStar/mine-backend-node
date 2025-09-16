@@ -12,7 +12,7 @@ app.use(express.json());
 // Route grouping
 app.use("/api/v1", v1Routes);
 
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   res.send("Server is running ✅");
 });
 
@@ -26,8 +26,6 @@ app.use((req, res) => {
   });
 });
 
-// ❌ REMOVE app.listen
-// ✅ Instead export as module for Vercel
 module.exports = app;
 
 // require("dotenv").config();
