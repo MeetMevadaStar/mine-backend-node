@@ -6,15 +6,13 @@ const pool = new Pool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  ssl: {
-    rejectUnauthorized: false, // Render requires SSL
-  },
 });
 
 pool
   .connect()
-  .then(() => {
+  .then((client) => {
     console.log("✅ PostgreSQL Connected!");
+    client.release();
   })
   .catch((err) => {
     console.error("❌ PostgreSQL Connection Failed:", err.message);
