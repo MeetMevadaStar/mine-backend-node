@@ -12,6 +12,10 @@ app.use(express.json());
 // Route grouping
 app.use("/api/v1", v1Routes);
 
+app.get("/", (req, res) => {
+  res.send("Server is running ✅");
+});
+
 // 404 handler
 app.use((req, res) => {
   return res.status(404).json({
