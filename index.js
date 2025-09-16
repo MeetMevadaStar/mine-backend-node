@@ -1,21 +1,21 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-
-const app = express();
+const serverless = require("serverless-http");
 const v1Routes = require("./routes/v1");
 
-// Middlewares
+const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Route grouping
 app.use("/api/v1", v1Routes);
 
-// //* Server
-app.use((req, res, next) => {
-  req.APINotFound = true;
-  return res.status(404).json({
+app.get("/run", (req, res) => {
+  res.send("Server is running ✅");
+});
+
+app.use((req, res) => {
+  res.status(404).json({
     error: "Not Found",
     message: `EndPoint not available: ${req.method} ${
       req.originalUrl?.split("?")[0]
@@ -23,6 +23,5 @@ app.use((req, res, next) => {
   });
 });
 
-app.get("/run", (req, res) => {
-  res.send("Server is running ✅");
-});
+module.exports = app;
+module.exports.handler = serverless(app);
