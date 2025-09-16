@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "index.js"
+    }
+  ],
+  "env": {
+    "IS_LIVE": "true",
+    "HOST": "0.0.0.0",
+    "PORT": "5000",
+    "API_KEY": "mysecretapikey",
+    "JWT_SECRET": "mineforcouplesupersecret",
+    "DB_HOST": "dpg-d2rdhindiees73e80of0-a.oregon-postgres.render.com",
+    "DB_PORT": "5432",
+    "DB_USER": "root",
+    "DB_PASSWORD": "aObImGliOfY65Z1S29DOIRUKNgHqNvrk",
+    "DB_NAME": "mine_couple",
+    "ADMIN_USERNAME": "meetstarboy",
+    "ADMIN_PASSWORD": "Admin@123"
+  }
+}
