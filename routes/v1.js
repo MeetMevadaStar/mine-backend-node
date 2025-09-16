@@ -10,10 +10,12 @@ const coupleRoutes = require("./webRouters/coupleRoutes");
 const loginRoutes = require("./mobileRouters/loginRoutes");
 const userProfileRoutes = require("./mobileRouters/profileRoutes");
 
+// Web routes
 router.use("/user", userRoutes);
 router.use("/auth", authRoutes);
 router.use("/couple", coupleRoutes);
 
+// Mobile routes
 router.use("/mobile-login", loginRoutes);
 router.use("/mobile-User", userProfileRoutes);
 
